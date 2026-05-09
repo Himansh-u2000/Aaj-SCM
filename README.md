@@ -203,30 +203,4 @@ src/
 5. The design system follows the Figma specifications provided
 6. No server-side rendering — client-only SPA deployed as static files
 
----
 
-## 🚀 Deployment
-
-The app builds to a static `dist/` folder. Deploy to:
-
-**Vercel:**
-```bash
-npx vercel
-```
-
-**Netlify:**
-```bash
-npx netlify deploy --prod --dir=dist
-```
-
-For SPA routing (React Router), add a `vercel.json`:
-```json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
-}
-```
-
-Or for Netlify, add `public/_redirects`:
-```
-/*    /index.html   200
-```
