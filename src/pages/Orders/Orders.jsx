@@ -13,11 +13,12 @@ import { usePagination } from '../../hooks/usePagination';
 import { getOrders, bulkUpdateOrders, updateOrderStatus, getAllFilteredOrders } from '../../services/orderService';
 import { formatCurrency, formatDateShort } from '../../utils/formatters';
 import { ORDER_STATUS, REGIONS } from '../../utils/constants';
-import { useToast } from '../../context/ToastContext';
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../store/toastSlice';
 import { exportOrdersToExcel } from '../../utils/exportUtils';
 
 const Orders = () => {
-  const { showToast } = useToast();
+  const dispatch = useDispatch();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -91,13 +92,13 @@ const Orders = () => {
     if (!bulkStatus) return;
     const result = await bulkUpdateOrders([...selectedIds], bulkStatus);
     if (result.success) {
-      showToast(`${result.data.updated} orders updated to ${result.data.status}`, 'success');
+      dispatch(showToast(`${result.data.updated} orders updated to ${result.data.status}`, 'success'));
       setSelectedIds(new Set());
       setBulkStatusModal(false);
       setBulkStatus('');
       fetchOrders();
     }
-  }, [selectedIds, bulkStatus, fetchOrders, showToast]);
+  }, [selectedIds, bulkStatus, fetchOrders, dispatch]);
 
   // Export handler
   const handleExport = useCallback(async () => {
@@ -108,12 +109,12 @@ const Orders = () => {
     });
     if (result.success) {
       exportOrdersToExcel(result.data, 'aaj_scm_orders');
-      showToast(`Exported ${result.data.length} orders to Excel`, 'success');
+      dispatch(showToast(`Exported ${result.data.length} orders to Excel`, 'success'));
     } else {
-      showToast('Export failed', 'error');
+      dispatch(showToast('Export failed', 'error'));
     }
     setExporting(false);
-  }, [debouncedSearch, statusFilter, regionFilter, sortBy, sortOrder, dateFrom, dateTo, showToast]);
+  }, [debouncedSearch, statusFilter, regionFilter, sortBy, sortOrder, dateFrom, dateTo, dispatch]);
 
   // Clear date range
   const clearDateRange = useCallback(() => {
@@ -140,14 +141,14 @@ const Orders = () => {
     setEditSaving(true);
     const result = await updateOrderStatus(editOrder.id, editStatus);
     if (result.success) {
-      showToast(`Order ${editOrder.orderId} updated to ${editStatus}`, 'success');
+      dispatch(showToast(`Order ${editOrder.orderId} updated to ${editStatus}`, 'success'));
       closeEditModal();
       fetchOrders();
     } else {
-      showToast('Failed to update order', 'error');
+      dispatch(showToast('Failed to update order', 'error'));
     }
     setEditSaving(false);
-  }, [editOrder, editStatus, fetchOrders, showToast, closeEditModal]);
+  }, [editOrder, editStatus, fetchOrders, dispatch, closeEditModal]);
 
   const SortIcon = ({ column }) => {
     if (sortBy !== column) return <svg className="w-3 h-3 text-secondary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>;

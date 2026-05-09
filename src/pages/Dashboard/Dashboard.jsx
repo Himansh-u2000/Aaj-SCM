@@ -33,12 +33,13 @@ const Dashboard = () => {
   const kpiCards = useMemo(() => {
     if (!stats) return [];
     return [
-      { title: 'Total Orders', value: formatCompactNumber(stats.totalOrders), trend: stats.trends.totalOrders, icon: 'orders', color: 'bg-blue-50 text-blue-600' },
-      { title: 'Delivered', value: formatCompactNumber(stats.deliveredOrders), trend: stats.trends.deliveredOrders, icon: 'delivered', color: 'bg-green-50 text-green-600' },
-      { title: 'Pending Shipments', value: formatCompactNumber(stats.pendingShipments), trend: stats.trends.pendingShipments, icon: 'pending', color: 'bg-amber-50 text-amber-600' },
-      { title: 'Delayed', value: formatCompactNumber(stats.delayedShipments), trend: stats.trends.delayedShipments, icon: 'delayed', color: 'bg-red-50 text-red-600' },
+      { title: 'Total Orders', value: formatCompactNumber(stats.totalOrders), trend: stats.trends.totalOrders, icon: 'orders', color: 'bg-blue-50 text-blue-600', invertTrend: false },
+      { title: 'Delivered', value: formatCompactNumber(stats.deliveredOrders), trend: stats.trends.deliveredOrders, icon: 'delivered', color: 'bg-green-50 text-green-600', invertTrend: false },
+      { title: 'Pending Shipments', value: formatCompactNumber(stats.pendingShipments), trend: stats.trends.pendingShipments, icon: 'pending', color: 'bg-amber-50 text-amber-600', invertTrend: true },
+      { title: 'Delayed', value: formatCompactNumber(stats.delayedShipments), trend: stats.trends.delayedShipments, icon: 'delayed', color: 'bg-red-50 text-red-600', invertTrend: true },
     ];
   }, [stats]);
+
 
   const getActivityIcon = useCallback((type) => {
     const icons = {
@@ -112,10 +113,18 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="mt-3 flex items-center gap-1.5">
-              <span className={`text-xs font-semibold ${kpi.trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {kpi.trend >= 0 ? '↑' : '↓'} {Math.abs(kpi.trend)}%
-              </span>
-              <span className="text-xs text-secondary-400">vs last month</span>
+              {(() => {
+                const isPositive = kpi.trend >= 0;
+                const isGood = kpi.invertTrend ? !isPositive : isPositive;
+                return (
+                  <>
+                    <span className={`text-xs font-semibold ${isGood ? 'text-green-600' : 'text-red-600'}`}>
+                      {isPositive ? '↑' : '↓'} {Math.abs(kpi.trend)}%
+                    </span>
+                    <span className="text-xs text-secondary-400">vs last month</span>
+                  </>
+                );
+              })()}
             </div>
           </Card>
         ))}

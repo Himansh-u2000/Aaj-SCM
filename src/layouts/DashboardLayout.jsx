@@ -1,5 +1,6 @@
 import { useState, memo, useCallback } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/authSlice';
 import Sidebar from '../components/Sidebar/Sidebar';
 import SearchBar from '../components/SearchBar/SearchBar';
 import { useIsMobile } from '../hooks/useMediaQuery';
@@ -11,7 +12,8 @@ import { useIsMobile } from '../hooks/useMediaQuery';
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [headerSearch, setHeaderSearch] = useState('');
-  const { user, logout } = useAuth();
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const isMobile = useIsMobile();
 
   const toggleSidebar = useCallback(() => setSidebarOpen(prev => !prev), []);
@@ -60,7 +62,7 @@ const DashboardLayout = ({ children }) => {
 
             {/* User avatar */}
             <button
-              onClick={logout}
+              onClick={() => dispatch(logout())}
               className="flex items-center gap-2 p-1 rounded-lg hover:bg-secondary-50 transition-colors"
               title="Logout"
             >

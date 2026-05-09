@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NAV_ITEMS } from '../../utils/constants';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
 import logo from '../../assets/logo-1-1-300x108.jpg';
 
 /**
@@ -40,11 +40,11 @@ const NavIcon = ({ icon, className = '' }) => {
 };
 
 /**
- * Sidebar component matching the Figma dark sidebar design.
+ * Sidebar component — white background matching Figma design.
  */
 const Sidebar = ({ isOpen, onClose, isMobile }) => {
   const location = useLocation();
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <>
@@ -55,19 +55,19 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
 
       <aside
         className={`
-          fixed top-0 left-0 h-full bg-secondary-800 text-white z-40
+          fixed top-0 left-0 h-full bg-white border-r border-secondary-100 z-40
           w-[220px] flex flex-col transition-transform duration-300 ease-in-out
           ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'}
           lg:translate-x-0
         `}
       >
         {/* Logo */}
-        <div className="px-5 py-5 flex items-center gap-3 border-b border-white/10">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <div className="px-5 py-5 flex items-center gap-3 border-b border-secondary-100">
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden border border-secondary-100">
             <img src={logo} alt="AAJ" className="w-7 h-auto object-contain" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-white leading-tight">AAJ SCM</h1>
+            <h1 className="text-base font-bold text-secondary-800 leading-tight">AAJ SCM</h1>
             <p className="text-[10px] text-secondary-400 leading-tight">Logistics Portal</p>
           </div>
         </div>
@@ -89,7 +89,7 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
                   transition-all duration-200
                   ${isActive
                     ? 'bg-primary text-white shadow-md'
-                    : 'text-secondary-300 hover:text-white hover:bg-white/8'
+                    : 'text-secondary-600 hover:text-secondary-800 hover:bg-secondary-50'
                   }
                 `}
               >
@@ -115,12 +115,12 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
 
         {/* User info */}
         {user && (
-          <div className="px-4 py-3 border-t border-white/10 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+          <div className="px-4 py-3 border-t border-secondary-100 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
               {user.name?.charAt(0) || 'U'}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-white truncate">{user.name}</p>
+              <p className="text-xs font-medium text-secondary-800 truncate">{user.name}</p>
               <p className="text-[10px] text-secondary-400 truncate">{user.role}</p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../store/authSlice';
 import AuthLayout from '../../layouts/AuthLayout';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
@@ -10,7 +11,7 @@ import logo from '../../assets/logo-1-1-300x108.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [rememberMe, setRememberMe] = useState(false);
@@ -39,14 +40,10 @@ const Login = () => {
     setLoading(true);
     setLoginError('');
     try {
-      const result = await login(formData.email, formData.password);
-      if (result.success) {
-        navigate('/', { replace: true });
-      } else {
-        setLoginError(result.error || 'Invalid email or password');
-      }
-    } catch {
-      setLoginError('Something went wrong. Please try again.');
+      await dispatch(loginUser({ email: formData.email, password: formData.password })).unwrap();
+      navigate('/', { replace: true });
+    } catch (err) {
+      setLoginError(err || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
