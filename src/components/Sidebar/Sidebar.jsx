@@ -113,18 +113,6 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
           </NavLink>
         </div>
 
-        {/* User info */}
-        {user && (
-          <div className="px-4 py-3 border-t border-secondary-100 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
-              {user.name?.charAt(0) || 'U'}
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-secondary-800 truncate">{user.name}</p>
-              <p className="text-[10px] text-secondary-400 truncate">{user.role}</p>
-            </div>
-          </div>
-        )}
       </aside>
     </>
   );

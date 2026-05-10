@@ -33,6 +33,19 @@ const statuses = [
 
 const priorities = ['High', 'Medium', 'Low'];
 
+const carriers = [
+  'Global Freight Inc.', 'Swift Logistics', 'Pacific Cargo Lines',
+  'Continental Express', 'Eagle Transport', 'Atlas Shipping Co.',
+  'Meridian Freight', 'Apex Carriers', 'Delta Air Cargo', 'OceanWay Shipping',
+];
+
+const vehicles = [
+  'MH-12-AB-1234', 'DL-01-CD-5678', 'KA-05-EF-9012', 'TN-09-GH-3456',
+  'GJ-06-IJ-7890', 'RJ-14-KL-2345', 'UP-32-MN-6789', 'AP-09-OP-0123',
+];
+
+const transportationModes = ['Road', 'Air', 'Sea', 'Rail', 'Multimodal'];
+
 const generateOrderId = (index) => `TRK-${8900 + index}`;
 
 const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -68,6 +81,10 @@ const generateOrders = (count = 500) => {
       weight: `${randomBetween(10, 5000)} kg`,
       estimatedDelivery: generateDate(daysAgo - randomBetween(2, 10)),
       trackingNumber: `TRK-${randomBetween(10000, 99999)}-${String.fromCharCode(65 + randomBetween(0, 25))}${randomBetween(0, 9)}${String.fromCharCode(65 + randomBetween(0, 25))}`,
+      carrier: randomFrom(carriers),
+      vehicleName: randomFrom(vehicles),
+      transportationMode: randomFrom(transportationModes),
+      actualDelivery: status === ORDER_STATUS.DELIVERED ? generateDate(daysAgo - randomBetween(1, 5)) : null,
     });
   }
   return orders;

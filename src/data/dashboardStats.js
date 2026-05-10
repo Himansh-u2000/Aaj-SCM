@@ -98,3 +98,66 @@ export const weeklyVolume = [
   { day: 'Sat', orders: 156, shipments: 134 },
   { day: 'Sun', orders: 89, shipments: 72 },
 ];
+
+export const carrierSplitData = [
+  { label: 'Deliveries Before Time', value: 3214, color: '#22c55e' },
+  { label: 'Deliveries On Time', value: 4856, color: '#facc15' },
+  { label: 'Delayed 1 Day', value: 1994, color: '#3b82f6' },
+  { label: 'Delayed 2 Days', value: 1240, color: '#f472b6' },
+  { label: 'Delayed 3 Days', value: 680, color: '#c084fc' },
+  { label: 'Delayed 4 Days', value: 421, color: '#2dd4bf' },
+  { label: 'Delayed 5+ Days', value: 442, color: '#fb923c' },
+];
+
+export const carrierDistribution = [
+  { label: 'Delhivery', value: 28, color: '#f87171' },
+  { label: 'AAJ', value: 22, color: '#fbbf24' },
+  { label: 'DTDC Courier', value: 18, color: '#60a5fa' },
+  { label: 'Gati', value: 12, color: '#a78bfa' },
+  { label: 'BlueDart Surface', value: 10, color: '#34d399' },
+  { label: 'Others', value: 10, color: '#94a3b8' },
+];
+
+export const delayAnalysis = [
+  { label: 'Delayed 1 Day', count: 1994, color: 'text-red-600', bgColor: 'bg-red-50' },
+  { label: 'Delayed 2 Days', count: 1240, color: 'text-amber-600', bgColor: 'bg-amber-50' },
+  { label: 'Delayed 3 Days', count: 680, color: 'text-orange-600', bgColor: 'bg-orange-50' },
+  { label: 'Delayed 4 Days', count: 421, color: 'text-purple-600', bgColor: 'bg-purple-50' },
+  { label: 'Delayed 5+ Days', count: 442, color: 'text-red-700', bgColor: 'bg-red-50' },
+];
+
+export const orderVolumeData = {
+  daily: [
+    { label: 'Mon', value: 245 },
+    { label: 'Tue', value: 312 },
+    { label: 'Wed', value: 289 },
+    { label: 'Thu', value: 367 },
+    { label: 'Fri', value: 298 },
+    { label: 'Sat', value: 156 },
+    { label: 'Sun', value: 89 },
+  ],
+  weekly: [
+    { label: 'W1', value: 1456 },
+    { label: 'W2', value: 1789 },
+    { label: 'W3', value: 1634 },
+    { label: 'W4', value: 1923 },
+    { label: 'W5', value: 1545 },
+    { label: 'W6', value: 2102 },
+    { label: 'W7', value: 1876 },
+    { label: 'W8', value: 1756 },
+  ],
+  monthly: [
+    { label: 'Jun', value: 4230 },
+    { label: 'Jul', value: 4812 },
+    { label: 'Aug', value: 5134 },
+    { label: 'Sep', value: 4678 },
+    { label: 'Oct', value: 5432 },
+    { label: 'Nov', value: 5890 },
+    { label: 'Dec', value: 6234 },
+    { label: 'Jan', value: 5456 },
+    { label: 'Feb', value: 5890 },
+    { label: 'Mar', value: 6312 },
+    { label: 'Apr', value: 6780 },
+    { label: 'May', value: 7120 },
+  ],
+};
