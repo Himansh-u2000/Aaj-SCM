@@ -74,7 +74,6 @@ const Login = () => {
           <div className="flex justify-center mb-3">
             <img src={logo} alt="AAJ SCM" className="h-12 object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-primary tracking-tight">AAJ SCM</h1>
           <p className="text-sm text-secondary-500 mt-1">Logistics Portal Login</p>
         </div>
 

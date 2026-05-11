@@ -23,16 +23,16 @@ const Drawer = ({ isOpen, onClose, title, children, width = 'max-w-lg', classNam
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50 top-0">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 animate-fade-in"
+        className="fixed inset-0 bg-black/40 animate-fade-in top-0"
         onClick={onClose}
       />
       {/* Drawer */}
       <div
         className={`
-          absolute top-0 right-0 h-full bg-white shadow-drawer
+          fixed top-0 right-0 h-full bg-white shadow-drawer
           w-full ${width} animate-slide-in-right overflow-y-auto
           ${className}
         `}

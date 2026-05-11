@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState, useCallback } from 'react';
 import Badge from '../../components/Badge/Badge';
 import Button from '../../components/Button/Button';
 import Drawer from '../../components/Drawer/Drawer';
@@ -7,10 +7,35 @@ import RouteProgress from '../../components/RouteProgress/RouteProgress';
 import { formatDateShort, formatWeight } from '../../utils/formatters';
 import logo from '../../assets/logo-1-1-300x108.jpg';
 
-/**
- * Shipment Detail Drawer — extracted from Shipments page for modularity.
- */
 const ShipmentDetailDrawer = ({ shipment, isOpen, onClose }) => {
+  const [localNotes, setLocalNotes] = useState([]);
+  const [showNoteInput, setShowNoteInput] = useState(false);
+  const [noteText, setNoteText] = useState('');
+
+  // Merge shipment notes + locally added notes
+  const allNotes = shipment ? [...shipment.notes, ...localNotes] : [];
+
+  const handleAddNote = useCallback(() => {
+    if (!noteText.trim()) return;
+    setLocalNotes((prev) => [
+      ...prev,
+      { author: 'You', note: noteText.trim(), timestamp: new Date().toISOString() },
+    ]);
+    setNoteText('');
+    setShowNoteInput(false);
+  }, [noteText]);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleAddNote();
+    }
+    if (e.key === 'Escape') {
+      setShowNoteInput(false);
+      setNoteText('');
+    }
+  }, [handleAddNote]);
+
   if (!shipment) return null;
 
   return (
@@ -87,11 +112,54 @@ const ShipmentDetailDrawer = ({ shipment, isOpen, onClose }) => {
         <div className="mx-5 mt-4">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-secondary-800">Operational Notes</h3>
-            <button className="text-xs font-medium text-primary hover:text-primary-700 transition-colors">+ Add Note</button>
+            {!showNoteInput && (
+              <button
+                onClick={() => setShowNoteInput(true)}
+                className="text-xs font-medium text-primary hover:text-primary-700 transition-colors"
+              >
+                + Add Note
+              </button>
+            )}
           </div>
-          {shipment.notes.length > 0 ? (
+
+          {/* Add Note Input */}
+          {showNoteInput && (
+            <div className="mb-3 animate-fade-in">
+              <div className="border border-secondary-200 rounded-lg focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                <textarea
+                  value={noteText}
+                  onChange={(e) => setNoteText(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type your note here..."
+                  rows={2}
+                  autoFocus
+                  className="w-full px-3 py-2 text-sm text-secondary-800 bg-transparent border-none outline-none resize-none placeholder:text-secondary-400"
+                />
+                <div className="flex items-center justify-between px-3 py-2 border-t border-secondary-100">
+                  <span className="text-[10px] text-secondary-400">Press Enter to submit · Esc to cancel</span>
+                  <div className="flex gap-1.5">
+                    <button
+                      onClick={() => { setShowNoteInput(false); setNoteText(''); }}
+                      className="px-2.5 py-1 text-xs font-medium text-secondary-500 hover:text-secondary-700 rounded transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleAddNote}
+                      disabled={!noteText.trim()}
+                      className="px-2.5 py-1 text-xs font-semibold text-white bg-primary rounded hover:bg-primary-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {allNotes.length > 0 ? (
             <div className="space-y-2">
-              {shipment.notes.map((note, i) => (
+              {allNotes.map((note, i) => (
                 <div key={i} className="px-3 py-2 bg-secondary-50 rounded-lg text-xs">
                   <span className="font-medium text-secondary-700">{note.author}: </span>
                   <span className="text-secondary-600">{note.note}</span>

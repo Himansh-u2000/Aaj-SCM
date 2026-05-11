@@ -32,7 +32,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md', classNam
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 animate-fade-in"
+        className="fixed inset-0 bg-black/50 animate-fade-in top-0"
         onClick={onClose}
       />
       {/* Modal */}

@@ -21,20 +21,25 @@ const TruckIcon = ({ className = '' }) => (
 const RouteProgress = ({ origin, destination, status, timeline = [], compact = false }) => {
   const progress = useMemo(() => {
     if (status === SHIPMENT_STATUS.DELIVERED) return 100;
-    if (status === SHIPMENT_STATUS.PENDING) return 5;
-    if (status === SHIPMENT_STATUS.OUT_FOR_DELIVERY) return 85;
 
+    // Timeline-based calculation takes priority
     if (timeline.length > 0) {
       const completedSteps = timeline.filter((e) => e.completed).length;
       const totalSteps = timeline.length;
       const pct = Math.round((completedSteps / Math.max(totalSteps, 1)) * 100);
 
       if (status === SHIPMENT_STATUS.DELAYED || status === SHIPMENT_STATUS.EXCEPTION) {
-        return Math.min(pct, 60);
+        return Math.max(5, Math.min(pct, 75));
       }
-      return Math.max(10, Math.min(pct, 90));
+      if (status === SHIPMENT_STATUS.OUT_FOR_DELIVERY) {
+        return Math.max(pct, 85);
+      }
+      return Math.max(5, Math.min(pct, 95));
     }
 
+    // Fallback when no timeline data exists
+    if (status === SHIPMENT_STATUS.PENDING) return 5;
+    if (status === SHIPMENT_STATUS.OUT_FOR_DELIVERY) return 85;
     return 30;
   }, [status, timeline]);
 

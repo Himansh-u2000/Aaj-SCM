@@ -6,7 +6,7 @@ import BarChart from '../../components/BarChart/BarChart';
 import { CardSkeleton } from '../../components/Loader/Loader';
 import { getDashboardStats, getOrdersByStatus } from '../../services/dashboardService';
 import { formatCompactNumber } from '../../utils/formatters';
-import { carrierSplitData, delayAnalysis, orderVolumeData } from '../../data/dashboardStats';
+import { carrierSplitData, orderVolumeData } from '../../data/dashboardStats';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -179,19 +179,6 @@ const Dashboard = () => {
           <BarChart datasets={orderVolumeData} title="Order Volume Trend" height={240} />
         </Card>
       </div>
-
-      {/* Beyond EDD Delivery Analysis */}
-      <Card>
-        <h3 className="text-sm font-semibold text-secondary-800 mb-4">Beyond EDD Delivery Analysis</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {delayAnalysis.map((item) => (
-            <div key={item.label} className={`${item.bgColor} rounded-xl p-4 text-center`}>
-              <p className="text-xs font-medium text-secondary-600 mb-1">{item.label}</p>
-              <p className={`text-2xl font-bold ${item.color}`}>{item.count.toLocaleString()}</p>
-            </div>
-          ))}
-        </div>
-      </Card>
     </div>
   );
 };
