@@ -67,8 +67,8 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
             <img src={logo} alt="AAJ" className="w-7 h-auto object-contain" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-secondary-800 leading-tight">AAJ SCM</h1>
-            <p className="text-[10px] text-secondary-400 leading-tight">Logistics Portal</p>
+            <h1 className="text-base font-bold text-secondary-800 leading-tight">Logistics Portal</h1>
+            {/* <p className="text-[10px] text-secondary-400 leading-tight">Logistics Portal</p> */}
           </div>
         </div>
 
